@@ -1,6 +1,8 @@
 #ifndef antsRegistrationOptimizerCommandIterationUpdate__h_
 #define antsRegistrationOptimizerCommandIterationUpdate__h_
 
+#include "itkTransformToDisplacementFieldSource.h"
+
 namespace ants
 {
 /** \class antsRegistrationOptimizerCommandIterationUpdate
@@ -20,6 +22,10 @@ public:
   typedef typename MetricType::MeasureType                 MeasureType;
   typedef itk::CompositeTransform<double, VImageDimension> CompositeTransformType;
   typedef typename CompositeTransformType::TransformType   TransformBaseType;
+
+  typedef itk::Vector<double, VImageDimension>             VectorType;  
+  typedef itk::Image<VectorType, VImageDimension>          DisplacementFieldType;  
+
 protected:
   antsRegistrationOptimizerCommandIterationUpdate()
   {
@@ -341,22 +347,12 @@ public:
     movingTransform->SetOnlyMostRecentTransformToOptimizeOn();
 
     //New Stuff  
-    /*
     typedef typename itk::TransformToDisplacementFieldSource<DisplacementFieldType> ConverterType;
     typename ConverterType::Pointer converter = ConverterType::New();
     converter->SetOutputParametersFromImage( this->m_origFixedImage );
-    converter->SetTransform( movingTransform );
-    */
+    converter->SetTransform( movingTransform );    
 
-    /*
-    typedef  itk::ImageFileWriter<DisplacementFieldType> DisplacementFieldWriterType;
-    typename DisplacementFieldWriterType::Pointer displacementFieldWriter = DisplacementFieldWriterType::New();
-    displacementFieldWriter->SetInput( converter->GetOutput() );
-    displacementFieldWriter->SetFileName( ( outputOption->GetFunction( 0 )->GetParameter( 0 ) ).c_str() );
-    displacementFieldWriter->Update();
-    */
-
-    // Now we apply this output transform to get warped image
+    // Now we apply this output transform to getwarped image
     /*
     typedef itk::LinearInterpolateImageFunction<ImageType, double> LinearInterpolatorType;
     typename LinearInterpolatorType::Pointer linearInterpolator = LinearInterpolatorType::New();
@@ -397,6 +393,23 @@ public:
       currentFileName << "_Iter" << curIter << ".disp.nii.gz";
       }
     std::cout << "*"; // The star befor each DIAGNOSTIC shows that its output is writtent out.
+
+
+    //New Stuff
+    typedef  itk::ImageFileWriter<DisplacementFieldType> DisplacementFieldWriterType;
+    typename DisplacementFieldWriterType::Pointer displacementFieldWriter = DisplacementFieldWriterType::New();
+    displacementFieldWriter->SetInput( converter->GetOutput() );
+    displacementFieldWriter->SetFileName( currentFileName.str().c_str() );
+    try
+      {    
+    displacementFieldWriter->Update();
+      }
+    catch( itk::ExceptionObject & err )
+      {
+      antscout << "Can't write warped image " << currentFileName.str().c_str() << std::endl;
+      antscout << "Exception Object caught: " << std::endl;
+      antscout << err << std::endl;
+      }
 
     /*
     typedef itk::ImageFileWriter<ImageType> WarpedImageWriterType;
