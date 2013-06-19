@@ -102,6 +102,7 @@ RegistrationHelper<VImageDimension>
   m_ApplyLinearTransformsToFixedImageHeader( true ),
   m_PrintSimilarityMeasureInterval( 0 ),
   m_WriteIntervalVolumes( 0 ),
+  m_WriteIntervalDisplacement( 0 ), 
   m_AllPreviousTransformsAreLinear( true ),
   m_CompositeLinearTransformForFixedImageHeader( NULL )
 {
@@ -1142,6 +1143,12 @@ RegistrationHelper<VImageDimension>
     if( this->m_WriteIntervalVolumes != 0 )
       {
       optimizerObserver->SetWriteInterationsOutputsInIntervals( this->m_WriteIntervalVolumes );
+      optimizerObserver->SetCurrentStageNumber( currentStageNumber );
+      }
+
+    if( this->m_WriteIntervalDisplacement != 0 )
+      {
+      optimizerObserver->SetWriteInterationsDisplacementInIntervals( this->m_WriteIntervalDisplacement );
       optimizerObserver->SetCurrentStageNumber( currentStageNumber );
       }
 

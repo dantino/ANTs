@@ -172,6 +172,20 @@ void InitializeCommandLineOptions( itk::ants::CommandLineParser *parser )
     parser->AddOption( option );
     }
 
+    //Dante
+    {
+    std::string description = std::string(
+        "Writes out the displacement field at each iteration. It helps to present the registration process as a short movie " );
+    OptionType::Pointer option = OptionType::New();
+    option->SetLongName( "write-interval-displacement" );
+    option->SetShortName( 'f' );
+    option->SetUsageOption( 0, "<unsignedIntegerValue>" );
+    option->SetDescription( description );
+    option->AddFunction( std::string( "0" ) );
+    parser->AddOption( option );
+    }
+
+
     {
     std::string description = std::string( "Collapse output transforms. " )
       + std::string( "Specifically, enabling this option combines all adjacent linear transforms " )
@@ -536,6 +550,14 @@ DoRegistration(typename ParserType::Pointer & parser)
     {
     regHelper->SetPrintSimilarityMeasureInterval( 0 );
     }
+
+  OptionType::Pointer writeIntervalDisplacement = parser->GetOption( "write-interval-displacement" );
+  if( writeIntervalDisplacement && writeIntervalDisplacement->GetNumberOfFunctions() )
+    {
+    unsigned int LengthOfIntervals = parser->Convert<unsigned int>( writeIntervalDisplacement->GetFunction( 0 )->GetName() );
+    regHelper->SetWriteIntervalDisplacement(LengthOfIntervals);
+    }
+
 
   std::string outputPrefix = outputOption->GetFunction( 0 )->GetName();
   if( outputOption->GetFunction( 0 )->GetNumberOfParameters() > 0 )
