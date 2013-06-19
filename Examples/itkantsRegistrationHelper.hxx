@@ -1185,7 +1185,11 @@ RegistrationHelper<VImageDimension>
       optimizerObserver2->SetWriteInterationsOutputsInIntervals( this->m_WriteIntervalVolumes );
       optimizerObserver2->SetCurrentStageNumber( currentStageNumber );
       }
-
+    if( this->m_WriteIntervalDisplacement != 0 )
+      {
+      optimizerObserver->SetWriteInterationsDisplacementInIntervals( this->m_WriteIntervalDisplacement );
+      optimizerObserver->SetCurrentStageNumber( currentStageNumber );
+      }
     // Set up the image registration methods along with the transforms
     const XfrmMethod whichTransform( this->m_TransformMethods[currentStageNumber].m_XfrmMethod );
 
@@ -2501,6 +2505,11 @@ RegistrationHelper<VImageDimension>
           displacementFieldRegistrationObserver2->SetWriteInterationsOutputsInIntervals( this->m_WriteIntervalVolumes );
           displacementFieldRegistrationObserver2->SetCurrentStageNumber( currentStageNumber );
           }
+        if( this->m_WriteIntervalDisplacement != 0 )
+          {
+          displacementFieldRegistrationObserver2->SetWriteInterationsDisplacementInIntervals( this->m_WriteIntervalDisplacement );
+          displacementFieldRegistrationObserver2->SetCurrentStageNumber( currentStageNumber );
+          }          
         displacementFieldRegistration->AddObserver( itk::InitializeEvent(), displacementFieldRegistrationObserver2 );
         displacementFieldRegistration->AddObserver( itk::IterationEvent(), displacementFieldRegistrationObserver2 );
 

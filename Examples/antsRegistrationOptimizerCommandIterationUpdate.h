@@ -352,20 +352,7 @@ public:
     converter->SetOutputParametersFromImage( this->m_origFixedImage );
     converter->SetTransform( movingTransform );    
 
-    // Now we apply this output transform to getwarped image
-    /*
-    typedef itk::LinearInterpolateImageFunction<ImageType, double> LinearInterpolatorType;
-    typename LinearInterpolatorType::Pointer linearInterpolator = LinearInterpolatorType::New();
 
-    typedef itk::ResampleImageFilter<ImageType, ImageType> ResampleFilterType;
-    typename ResampleFilterType::Pointer resampler = ResampleFilterType::New();
-    resampler->SetTransform( movingTransform );
-    resampler->SetInput( this->m_origMovingImage );
-    resampler->SetOutputParametersFromImage( this->m_origFixedImage );
-    resampler->SetInterpolator( linearInterpolator );
-    resampler->SetDefaultPixelValue( 0 );
-    resampler->Update();
-    */
     // write the results to the disk
     // const unsigned int curLevel = this->m_Optimizer->GetCurrentLevel();
     const unsigned int curIter = this->m_Optimizer->GetCurrentIteration() + 1;
@@ -411,22 +398,6 @@ public:
       antscout << err << std::endl;
       }
 
-    /*
-    typedef itk::ImageFileWriter<ImageType> WarpedImageWriterType;
-    typename WarpedImageWriterType::Pointer writer = WarpedImageWriterType::New();
-    writer->SetFileName( currentFileName.str().c_str() );
-    writer->SetInput( resampler->GetOutput() );
-    try
-      {
-      writer->Update();
-      }
-    catch( itk::ExceptionObject & err )
-      {
-      antscout << "Can't write warped image " << currentFileName.str().c_str() << std::endl;
-      antscout << "Exception Object caught: " << std::endl;
-      antscout << err << std::endl;
-      }
-    */
   }
 
 

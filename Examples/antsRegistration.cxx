@@ -178,7 +178,7 @@ void InitializeCommandLineOptions( itk::ants::CommandLineParser *parser )
         "Writes out the displacement field at each iteration. It helps to present the registration process as a short movie " );
     OptionType::Pointer option = OptionType::New();
     option->SetLongName( "write-interval-displacement" );
-    option->SetShortName( 'f' );
+    option->SetShortName( 'y' );
     option->SetUsageOption( 0, "<unsignedIntegerValue>" );
     option->SetDescription( description );
     option->AddFunction( std::string( "0" ) );
