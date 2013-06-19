@@ -145,7 +145,7 @@ public:
 
 
       if( ( this->m_WriteInterationsDisplacementInIntervals != 0 ) &&
-          ( (lCurrentIteration % this->m_WriteInterationsDisplacementInIntervals == 0 ) ||
+          ( lCurrentIteration == 1 || (lCurrentIteration % this->m_WriteInterationsDisplacementInIntervals == 0 ) ||
          lCurrentIteration == lastIteration) )
         {
         // This function writes the output volume of each iteration to the disk.
