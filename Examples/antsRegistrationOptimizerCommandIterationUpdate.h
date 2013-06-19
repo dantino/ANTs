@@ -145,7 +145,7 @@ public:
 
 
       if( ( this->m_WriteInterationsDisplacementInIntervals != 0 ) &&
-          ( lCurrentIteration == 1 || (lCurrentIteration % this->m_WriteInterationsDisplacementInIntervals == 0 ) ||
+          ( (lCurrentIteration % this->m_WriteInterationsDisplacementInIntervals == 0 ) ||
          lCurrentIteration == lastIteration) )
         {
         // This function writes the output volume of each iteration to the disk.
@@ -340,8 +340,8 @@ public:
         inputMovingTransform->GetNthTransform(i)->GetParameters();
       const typename TransformBaseType::ParametersType & moving_fixed_paras =
         inputMovingTransform->GetNthTransform(i)->GetFixedParameters();
-      subTransform->SetParameters( moving_paras );
       subTransform->SetFixedParameters( moving_fixed_paras );
+      subTransform->SetParameters( moving_paras );
       movingTransform->AddTransform( subTransform );
       }
     movingTransform->SetOnlyMostRecentTransformToOptimizeOn();
